@@ -2,3 +2,4 @@ nb/
 data/
 .venv/
 .DS_Store/
+app/__pycache__/*
