@@ -68,6 +68,13 @@ class CleanData :
         inputs = seq.pad_sequences(inputs, value=0, padding='post', maxlen=MAX_LENGTH)
         return inputs
 
+    @classmethod
+    def get_datasets(self, inputs, outputs, BATCH_SIZE, BUFFER_SIZE) :
+        dataset = tf.data.Dataset.from_tensor_slices((inputs, outputs))
+        dataset = dataset.cache()
+        dataset = dataset.shuffle(BUFFER_SIZE).batch(BATCH_SIZE)
+        dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)
+
 
 
 if __name__ == "__main__":
