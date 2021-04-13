@@ -128,22 +128,22 @@ class CleanData :
     
     def remove_long_sentences(self) :
         inputs, outputs = self.get_puts() 
-        
+        print('remove_long_sentences 1')
         idx_to_remove = [count for count, sent in enumerate(inputs) if len(sent) > self.MAX_LENGTH]
         for idx in reversed(idx_to_remove):
             del inputs[idx]
             del outputs[idx]
-
+        print('remove_long_sentences 2')
         idx_to_remove = [count for count, sent in enumerate(outputs) if len(sent) > self.MAX_LENGTH]
         for idx in reversed(idx_to_remove):
             del inputs[idx]
             del outputs[idx]
-
+        print('remove_long_sentences 3')
         seq = tf.keras.preprocessing.sequence
         inputs = seq.pad_sequences(inputs, value=0, padding='post', maxlen=self.MAX_LENGTH)
         outputs = seq.pad_sequences(outputs, value=0, padding='post', maxlen=self.MAX_LENGTH)
 
-        print('remove_long_sentences')
+        print('remove_long_sentences 4')
         return inputs, outputs
 
 
@@ -179,9 +179,9 @@ if __name__ == "__main__":
         BUFFER_SIZE = 20000
     )
 
-    input_temp, output_temp = cd.get_dataset()
+    dataset = cd.get_dataset()
 
-    print(output_temp)
+    print(dataset)
 
 
     #cd.path_to_csv()
