@@ -9,7 +9,6 @@ def get_data_text(path) :
     return data_text
 
 
-
 if __name__ == "__main__":
     europarl_en_path = "data/es-en/europarl-v7.es-en.en"
     europarl_es_path = "data/es-en/europarl-v7.es-en.es"
