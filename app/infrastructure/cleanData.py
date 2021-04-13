@@ -26,7 +26,6 @@ class CleanData :
         self.MAX_LENGTH = MAX_LENGTH
         self.BATCH_SIZE = BATCH_SIZE
         self.BUFFER_SIZE = BUFFER_SIZE
-        #self.inputs, self.outputs = self.remove_long_sentences()
 
 
     def get_data(self):
@@ -36,21 +35,31 @@ class CleanData :
         with open(self.output_data_path, mode = "r", encoding = "utf-8") as f:
             output_corpus = f.read()
 
-        print(output_corpus)
-        
+        print('get_data')
         return input_corpus, output_corpus
+
+    
+    def get_non_breaking_prefix_data(self):
+        with open(self.input_nb_prefix_path, mode = "r", encoding = "utf-8") as f:
+            input_nb_prefix = f.read()
+        
+        with open(self.output_nb_prefix_path, mode = "r", encoding = "utf-8") as f:
+            output_nb_prefix = f.read()
+
+        print('get_non_breaking_prefix_data')
+        return input_nb_prefix, output_nb_prefix
 
 
     def get_non_breaking_prefix(self) :
-        input_prefix_text, output_prefix_text = self.get_data() 
+        input_nb_prefix, output_nb_prefix = self.get_non_breaking_prefix_data()
         
-        non_breaking_prefix = input_prefix_text.split("\n")
+        non_breaking_prefix = input_nb_prefix.split("\n")
         input_non_breaking_prefix = [' ' + pref + '.' for pref in non_breaking_prefix]
 
-        non_breaking_prefix = output_prefix_text.split("\n")
+        non_breaking_prefix = output_nb_prefix.split("\n")
         output_non_breaking_prefix = [' ' + pref + '.' for pref in non_breaking_prefix]
         
-        print(output_non_breaking_prefix)
+        print('get_non_breaking_prefix')
         return input_non_breaking_prefix, output_non_breaking_prefix
 
 
@@ -58,37 +67,41 @@ class CleanData :
         corpus = re.sub(r"\.(?=[0-9]|[a-z]|[A-Z])", ".$$$", corpus)
         corpus = re.sub(r"\.\$\$\$", '', corpus)
         corpus = re.sub(r"  +", " ", corpus)
+        print('get_regex_cleaned_corpus')
         return corpus.split('\n')
 
     
     def get_cleaned_corpus(self) :
+        print('get_cleaned_corpus 1')
         input_corpus, output_corpus = self.get_data() 
         input_non_breaking_prefix, output_non_breaking_prefix = self.get_non_breaking_prefix()
         
+        print('get_cleaned_corpus 2')
         for prefix in input_non_breaking_prefix:
             input_corpus = input_corpus.replace(prefix, prefix + '$$$')
         input_corpus = self.get_regex_cleaned_corpus(input_corpus)
 
+        print('get_cleaned_corpus 3')
         for prefix in output_non_breaking_prefix:
             output_corpus = output_corpus.replace(prefix, prefix + '$$$')
         output_corpus = self.get_regex_cleaned_corpus(output_corpus)
         
-        print(output_corpus)
+        print('get_cleaned_corpus 4')
         return input_corpus, output_corpus
         
 
     def tokenize(self) :
         input_corpus, output_corpus = self.get_cleaned_corpus()
         st_enc = tfds.deprecated.text.SubwordTextEncoder
-        
+        print('tokenize 1')
         input_tokenizer = st_enc.build_from_corpus(
             input_corpus, target_vocab_size=2**13
         )
-
+        print('tokenize 2')
         output_tokenizer = st_enc.build_from_corpus(
             output_corpus, target_vocab_size=2**13
         )
-
+        print('tokenize 3')
         return input_tokenizer, output_tokenizer, input_corpus, output_corpus
 
 
@@ -97,18 +110,18 @@ class CleanData :
         input_tokenizer, output_tokenizer, input_corpus, output_corpus = self.tokenize()
         INPUT_VOCAB_SIZE = input_tokenizer.vocab_size + 2
         OUTPUT_VOCAB_SIZE = output_tokenizer.vocab_size + 2
-        
+        print('get_puts 1')
         inputs = [
             [INPUT_VOCAB_SIZE-2] + input_tokenizer.encode(sentence) + [INPUT_VOCAB_SIZE-1]
             for sentence in input_corpus
         ]
-
+        print('get_puts 2')
         outputs = [
             [OUTPUT_VOCAB_SIZE-2] + output_tokenizer.encode(sentence) + [OUTPUT_VOCAB_SIZE-1]
             for sentence in input_corpus
         ]
 
-        print(outputs)
+        print('get_puts 3')
         return inputs, outputs
 
 
@@ -130,7 +143,7 @@ class CleanData :
         inputs = seq.pad_sequences(inputs, value=0, padding='post', maxlen=self.MAX_LENGTH)
         outputs = seq.pad_sequences(outputs, value=0, padding='post', maxlen=self.MAX_LENGTH)
 
-        print(outputs)
+        print('remove_long_sentences')
         return inputs, outputs
 
 
@@ -140,6 +153,7 @@ class CleanData :
         dataset = dataset.cache()
         dataset = dataset.shuffle(self.BUFFER_SIZE).batch(self.BATCH_SIZE)
         dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)
+        print('get_dataset')
         return dataset
 
 
