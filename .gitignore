@@ -3,3 +3,4 @@ data/
 .venv/
 .DS_Store/
 app/__pycache__/*
+app/infrastructure/__pycache__/*
