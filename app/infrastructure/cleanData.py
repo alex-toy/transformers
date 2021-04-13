@@ -1,8 +1,8 @@
 import re
+import pandas as pd
 import tensorflow as tf
 import tensorflow_datasets as tfds
 import app.config as cf
-from getData import *
 
 
 class CleanData :
@@ -10,82 +10,166 @@ class CleanData :
     cleans text data from raw file
     """
 
-    def __init__(self, data_path, nb_prefix_path) :
-        self.data_path = data_path
-        self.nb_prefix_path = nb_prefix_path
-        self.corpus = self.get_cleaned_corpus()
+    def __init__(self, 
+            input_data_path, 
+            input_nb_prefix_path, 
+            output_data_path, 
+            output_nb_prefix_path,
+            MAX_LENGTH, 
+            BATCH_SIZE, 
+            BUFFER_SIZE
+        ) :
+        self.input_data_path = input_data_path
+        self.input_nb_prefix_path = input_nb_prefix_path
+        self.output_data_path = output_data_path
+        self.output_nb_prefix_path = output_nb_prefix_path
+        self.MAX_LENGTH = MAX_LENGTH
+        self.BATCH_SIZE = BATCH_SIZE
+        self.BUFFER_SIZE = BUFFER_SIZE
+        #self.inputs, self.outputs = self.remove_long_sentences()
 
 
-    @classmethod
-    def get_data(cls, path):
-        with open(path, mode = "r", encoding = "utf-8") as f:
-            data_text = f.read()
-        return data_text
+    def get_data(self):
+        with open(self.input_data_path, mode = "r", encoding = "utf-8") as f:
+            input_corpus = f.read()
+        
+        with open(self.output_data_path, mode = "r", encoding = "utf-8") as f:
+            output_corpus = f.read()
+
+        print(output_corpus)
+        
+        return input_corpus, output_corpus
 
 
     def get_non_breaking_prefix(self) :
-        prefix_text = self.get_data(self.nb_prefix_path) 
-        non_breaking_prefix = prefix_text.split("\n")
-        non_breaking_prefix = [' ' + pref + '.' for pref in non_breaking_prefix]
-        return non_breaking_prefix
+        input_prefix_text, output_prefix_text = self.get_data() 
+        
+        non_breaking_prefix = input_prefix_text.split("\n")
+        input_non_breaking_prefix = [' ' + pref + '.' for pref in non_breaking_prefix]
 
-    
-    def get_cleaned_corpus(self) :
-        corpus = self.get_data(self.data_path) 
-        for prefix in self.get_non_breaking_prefix():
-            corpus = corpus.replace(prefix, prefix + '$$$')
+        non_breaking_prefix = output_prefix_text.split("\n")
+        output_non_breaking_prefix = [' ' + pref + '.' for pref in non_breaking_prefix]
+        
+        print(output_non_breaking_prefix)
+        return input_non_breaking_prefix, output_non_breaking_prefix
+
+
+    def get_regex_cleaned_corpus(self, corpus) :
         corpus = re.sub(r"\.(?=[0-9]|[a-z]|[A-Z])", ".$$$", corpus)
         corpus = re.sub(r"\.\$\$\$", '', corpus)
         corpus = re.sub(r"  +", " ", corpus)
-        corpus = corpus.split('\n')
-        return corpus
+        return corpus.split('\n')
+
+    
+    def get_cleaned_corpus(self) :
+        input_corpus, output_corpus = self.get_data() 
+        input_non_breaking_prefix, output_non_breaking_prefix = self.get_non_breaking_prefix()
+        
+        for prefix in input_non_breaking_prefix:
+            input_corpus = input_corpus.replace(prefix, prefix + '$$$')
+        input_corpus = self.get_regex_cleaned_corpus(input_corpus)
+
+        for prefix in output_non_breaking_prefix:
+            output_corpus = output_corpus.replace(prefix, prefix + '$$$')
+        output_corpus = self.get_regex_cleaned_corpus(output_corpus)
+        
+        print(output_corpus)
+        return input_corpus, output_corpus
         
 
     def tokenize(self) :
+        input_corpus, output_corpus = self.get_cleaned_corpus()
         st_enc = tfds.deprecated.text.SubwordTextEncoder
-        tokenizer = st_enc.build_from_corpus(
-            self.corpus, target_vocab_size=2**13
+        
+        input_tokenizer = st_enc.build_from_corpus(
+            input_corpus, target_vocab_size=2**13
         )
-        return tokenizer
+
+        output_tokenizer = st_enc.build_from_corpus(
+            output_corpus, target_vocab_size=2**13
+        )
+
+        return input_tokenizer, output_tokenizer, input_corpus, output_corpus
 
 
-    def get_input_output(self) :
-        tokenizer = self.tokenize()
-        VOCAB_SIZE = tokenizer.vocab_size + 2
+
+    def get_puts(self) :
+        input_tokenizer, output_tokenizer, input_corpus, output_corpus = self.tokenize()
+        INPUT_VOCAB_SIZE = input_tokenizer.vocab_size + 2
+        OUTPUT_VOCAB_SIZE = output_tokenizer.vocab_size + 2
+        
         inputs = [
-            [VOCAB_SIZE-2] + tokenizer.encode(sentence) + [VOCAB_SIZE-1] for sentence in self.corpus
+            [INPUT_VOCAB_SIZE-2] + input_tokenizer.encode(sentence) + [INPUT_VOCAB_SIZE-1]
+            for sentence in input_corpus
         ]
-        return inputs
+
+        outputs = [
+            [OUTPUT_VOCAB_SIZE-2] + output_tokenizer.encode(sentence) + [OUTPUT_VOCAB_SIZE-1]
+            for sentence in input_corpus
+        ]
+
+        print(outputs)
+        return inputs, outputs
+
 
     
-    def remove_long_sentences(self, MAX_LENGTH) :
-        inputs = get_input_output()
-        idx_to_remove = [count for count, sent in enumerate(inputs) if len(sent) > MAX_LENGTH]
+    def remove_long_sentences(self) :
+        inputs, outputs = self.get_puts() 
+        
+        idx_to_remove = [count for count, sent in enumerate(inputs) if len(sent) > self.MAX_LENGTH]
         for idx in reversed(idx_to_remove):
             del inputs[idx]
             del outputs[idx]
-        seq = tf.keras.preprocessing.sequence
-        inputs = seq.pad_sequences(inputs, value=0, padding='post', maxlen=MAX_LENGTH)
-        return inputs
 
-    @classmethod
-    def get_datasets(self, inputs, outputs, BATCH_SIZE, BUFFER_SIZE) :
+        idx_to_remove = [count for count, sent in enumerate(outputs) if len(sent) > self.MAX_LENGTH]
+        for idx in reversed(idx_to_remove):
+            del inputs[idx]
+            del outputs[idx]
+
+        seq = tf.keras.preprocessing.sequence
+        inputs = seq.pad_sequences(inputs, value=0, padding='post', maxlen=self.MAX_LENGTH)
+        outputs = seq.pad_sequences(outputs, value=0, padding='post', maxlen=self.MAX_LENGTH)
+
+        print(outputs)
+        return inputs, outputs
+
+
+    def get_dataset(self) :
+        inputs, outputs = self.remove_long_sentences()
         dataset = tf.data.Dataset.from_tensor_slices((inputs, outputs))
         dataset = dataset.cache()
-        dataset = dataset.shuffle(BUFFER_SIZE).batch(BATCH_SIZE)
+        dataset = dataset.shuffle(self.BUFFER_SIZE).batch(self.BATCH_SIZE)
         dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)
+        return dataset
+
+
+    def path_to_csv(self) :
+        inputs, outputs = self.remove_long_sentences()
+        pd.DataFrame(inputs).to_csv(cf.INPUTS_FILE, index=False)
+        pd.DataFrame(outputs).to_csv(cf.OUTPUTS_FILE, index=False)
+
 
 
 
 if __name__ == "__main__":
-    europarl_en_path = "data/es-en/europarl-v7.es-en.en"
-    europarl_es_path = "data/es-en/europarl-v7.es-en.es"
-    nb_prefix_en_path = "data/nonbreaking_prefix.en"
-    nb_prefix_es_path = "data/nonbreaking_prefix.es"
 
-    cd = CleanData(europarl_en_path, nb_prefix_en_path)
-    test = cd.get_input_output()
+    #print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
+    
+    cd = CleanData(
+        input_data_path=cf.europarl_en_path, 
+        input_nb_prefix_path=cf.nb_prefix_en_path, 
+        output_data_path=cf.europarl_es_path, 
+        output_nb_prefix_path=cf.nb_prefix_es_path,
+        MAX_LENGTH=20,
+        BATCH_SIZE = 64,
+        BUFFER_SIZE = 20000
+    )
 
-    print(test)
+    input_temp, output_temp = cd.get_dataset()
+
+    print(output_temp)
+
+
+    #cd.path_to_csv()
 
 
