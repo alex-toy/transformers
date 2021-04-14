@@ -108,16 +108,16 @@ class CleanData :
 
     def get_puts(self) :
         input_tokenizer, output_tokenizer, input_corpus, output_corpus = self.tokenize()
-        INPUT_VOCAB_SIZE = input_tokenizer.vocab_size + 2
-        OUTPUT_VOCAB_SIZE = output_tokenizer.vocab_size + 2
+        self.INPUT_VOCAB_SIZE = input_tokenizer.vocab_size + 2
+        self.OUTPUT_VOCAB_SIZE = output_tokenizer.vocab_size + 2
         print('get_puts 1')
         inputs = [
-            [INPUT_VOCAB_SIZE-2] + input_tokenizer.encode(sentence) + [INPUT_VOCAB_SIZE-1]
+            [self.INPUT_VOCAB_SIZE-2] + input_tokenizer.encode(sentence) + [self.INPUT_VOCAB_SIZE-1]
             for sentence in input_corpus
         ]
         print('get_puts 2')
         outputs = [
-            [OUTPUT_VOCAB_SIZE-2] + output_tokenizer.encode(sentence) + [OUTPUT_VOCAB_SIZE-1]
+            [self.OUTPUT_VOCAB_SIZE-2] + output_tokenizer.encode(sentence) + [self.OUTPUT_VOCAB_SIZE-1]
             for sentence in input_corpus
         ]
 

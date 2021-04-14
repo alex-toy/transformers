@@ -1,8 +1,9 @@
 import app.model.Transformer
 import app.config as cf
-import app.infrastructure.CleanData as CleanData
-import app.model.CustomSchedule as CustomSchedule
-import run_model
+from app.infrastructure.CleanData import CleanData
+from app.model.CustomSchedule import CustomSchedule
+from app.model.Transformer import Transformer
+from app.application.run_model import run_model
 
 import tensorflow as tf
 
@@ -24,8 +25,8 @@ if __name__ == "__main__":
     dataset = cd.get_dataset()
 
     transformer = Transformer(
-        vocab_size_enc=cf.VOCAB_SIZE_EN,
-        vocab_size_dec=cf.VOCAB_SIZE_ES,
+        vocab_size_enc=cd.INPUT_VOCAB_SIZE,
+        vocab_size_dec=cd.OUTPUT_VOCAB_SIZE,
         d_model=cf.D_MODEL,
         nb_layers=cf.NB_LAYERS,
         FFN_units=cf.FFN_UNITS,

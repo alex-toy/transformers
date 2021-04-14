@@ -1,6 +1,9 @@
 import tensorflow as tf
+import tensorflow.keras.layers as layers
+from app.model.PositionalEncoding import PositionalEncoding
+from app.model.EncoderLayer import EncoderLayer
 
-class Encoder(tf.keras.layers.Layer):
+class Encoder(layers.Layer):
     
     def __init__(self,
                  nb_layers,
