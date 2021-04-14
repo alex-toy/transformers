@@ -1,6 +1,9 @@
 import tensorflow as tf
+import tensorflow.keras.layers as layers
+from app.model.scaled_dot_product_attention import scaled_dot_product_attention
 
-class MultiHeadAttention(tf.keras.layers.Layer):
+
+class MultiHeadAttention(layers.Layer):
     
     def __init__(self, nb_proj):
         super(MultiHeadAttention, self).__init__()

@@ -1,6 +1,8 @@
 import tensorflow as tf
+import tensorflow.keras.layers as layers
+from app.model.MultiHeadAttention import MultiHeadAttention
 
-class DecoderLayer(tf.keras.layers.Layer):
+class DecoderLayer(layers.Layer):
     
     def __init__(self, FFN_units, nb_proj, dropout_rate):
         super(DecoderLayer, self).__init__()

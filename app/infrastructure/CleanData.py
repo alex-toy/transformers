@@ -115,20 +115,27 @@ class CleanData :
 
     def get_puts(self) :
         input_tokenizer, output_tokenizer, input_corpus, output_corpus = self.tokenize()
+        
         self.INPUT_VOCAB_SIZE = input_tokenizer.vocab_size + 2
+        print('Dump  INPUT_VOCAB_SIZE')
+        dump(self.INPUT_VOCAB_SIZE, os.path.join(cf.OUTPUTS_MODELS_DIR, 'INPUT_VOCAB_SIZE.joblib'))
+        
         self.OUTPUT_VOCAB_SIZE = output_tokenizer.vocab_size + 2
-        print('get_puts 1')
+        print('Dump  OUTPUT_VOCAB_SIZE')
+        dump(self.OUTPUT_VOCAB_SIZE, os.path.join(cf.OUTPUTS_MODELS_DIR, 'OUTPUT_VOCAB_SIZE.joblib'))
+        
+        print('get_puts : inputs')
         inputs = [
             [self.INPUT_VOCAB_SIZE-2] + input_tokenizer.encode(sentence) + [self.INPUT_VOCAB_SIZE-1]
             for sentence in input_corpus
         ]
-        print('get_puts 2')
+        print('get_puts : outputs')
         outputs = [
             [self.OUTPUT_VOCAB_SIZE-2] + output_tokenizer.encode(sentence) + [self.OUTPUT_VOCAB_SIZE-1]
             for sentence in input_corpus
         ]
 
-        print('get_puts 3')
+        print('get_puts return')
         return inputs, outputs
 
 

@@ -1,6 +1,8 @@
 import tensorflow as tf
+import tensorflow.keras.layers as layers
+from app.model.MultiHeadAttention import MultiHeadAttention
 
-class EncoderLayer(tf.keras.layers.Layer):
+class EncoderLayer(layers.Layer):
     
     def __init__(self, FFN_units, nb_proj, dropout_rate):
         super(EncoderLayer, self).__init__()
