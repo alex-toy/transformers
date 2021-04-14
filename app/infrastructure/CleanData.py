@@ -4,6 +4,8 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 import app.config as cf
 
+from joblib import dump, load
+
 
 class CleanData :
     """
@@ -97,11 +99,15 @@ class CleanData :
         input_tokenizer = st_enc.build_from_corpus(
             input_corpus, target_vocab_size=2**13
         )
-        print('tokenize 2')
+        print('tokenize ; dump input_tokenizer')
+        dump(model, os.path.join(cf.OUTPUTS_MODELS_DIR, model_name)) 
+        
         output_tokenizer = st_enc.build_from_corpus(
             output_corpus, target_vocab_size=2**13
         )
-        print('tokenize 3')
+        print('tokenize ; dump output_tokenizer')
+        dump(model, os.path.join(cf.OUTPUTS_MODELS_DIR, model_name)) 
+
         return input_tokenizer, output_tokenizer, input_corpus, output_corpus
 
 

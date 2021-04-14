@@ -14,6 +14,8 @@ OUTPUTS_FILE = os.path.join(OUTPUTS_DIR, 'outputs.csv')
 
 CHECKPOINT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../checkpoint'))
 
+OUTPUTS_MODELS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../models'))
+
 MAX_LENGTH=20
 BATCH_SIZE = 64
 BUFFER_SIZE = 20000

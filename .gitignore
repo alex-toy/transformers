@@ -1,6 +1,10 @@
 nb/
+
 checkpoint/*
 !checkpoint/README.md
+
+models/*
+!models/README.md
 
 data/es_en/europarl-v7.es-en.en
 data/es_en/europarl-v7.es-en.es
