@@ -1,4 +1,4 @@
-# NLP project 5 - Transformer
+# NLP project 1 - Transformer
 
 By Alessio Rea
 
@@ -82,15 +82,6 @@ The project is divided into three main parts :
     ├── checkpoint
     │   ├── README.md
     │   ├── checkpoint
-    │   ├── ckpt-54.data-00000-of-00001
-    │   ├── ckpt-54.index
-    │   ├── ckpt-55.data-00000-of-00001
-    │   ├── ckpt-55.index
-    │   ├── ckpt-56.data-00000-of-00001
-    │   ├── ckpt-56.index
-    │   ├── ckpt-57.data-00000-of-00001
-    │   ├── ckpt-57.index
-    │   ├── ckpt-58.data-00000-of-00001
     │   └── ckpt-58.index
     ├── data
     │   ├── es_en
