@@ -35,6 +35,6 @@ def train_model(dataset, ckpt_manager, transformer, optimizer) :
                     
             ckpt_save_path = ckpt_manager.save()
             print("Keep checkpoint for epoch {} in {}".format(epoch+1, ckpt_save_path))
-            print("Duration of 1 epoch: {} secs\n".format(time.time() - start))
+            print(f"Duration of epoch {epoch} : {time.time() - start} secs\n")
 
     return transformer
