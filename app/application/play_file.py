@@ -1,3 +1,5 @@
+import app.model.Transformer
+
 tf.keras.backend.clear_session()
 
 D_MODEL = 128 # 512

@@ -9,12 +9,10 @@ class DecoderLayer(layers.Layer):
     def build(self, input_shape):
         self.d_model = input_shape[-1]
         
-        # Self multi head attention
         self.multi_head_attention_1 = MultiHeadAttention(self.nb_proj)
         self.dropout_1 = layers.Dropout(rate=self.dropout_rate)
         self.norm_1 = layers.LayerNormalization(epsilon=1e-6)
         
-        # Multi head attention combinado con la salida del encoder 
         self.multi_head_attention_2 = MultiHeadAttention(self.nb_proj)
         self.dropout_2 = layers.Dropout(rate=self.dropout_rate)
         self.norm_2 = layers.LayerNormalization(epsilon=1e-6)
