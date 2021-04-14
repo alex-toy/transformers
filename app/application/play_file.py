@@ -1,6 +1,8 @@
 import app.model.Transformer
 import app.config as cf
-import app.infrastructure.CleanData
+import app.infrastructure.CleanData as CleanData
+import app.model.CustomSchedule as CustomSchedule
+import run_model
 
 import tensorflow as tf
 
@@ -31,15 +33,24 @@ if __name__ == "__main__":
         dropout_rate=cf.DROPOUT_RATE
     )
 
-    checkpoint_path = cf.CHECKPOINT_PATH
+    leaning_rate = CustomSchedule(D_MODEL)
+    optimizer = tf.keras.optimizers.Adam(
+        leaning_rate,
+        beta_1=0.9,
+        beta_2=0.98,
+        epsilon=1e-9
+    )
 
     ckpt = tf.train.Checkpoint(
         transformer=transformer,
         optimizer=optimizer
     )
 
-    ckpt_manager = tf.train.CheckpointManager(ckpt, checkpoint_path, max_to_keep=5)
+    ckpt_manager = tf.train.CheckpointManager(ckpt, cf.CHECKPOINT_PATH, max_to_keep=5)
 
     if ckpt_manager.latest_checkpoint:
         ckpt.restore(ckpt_manager.latest_checkpoint)
-        print("Último checkpoint restaurado!!")
+        print("Last checkpoint restored!!")
+
+    
+    run_model(dataset)

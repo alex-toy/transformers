@@ -1,7 +1,9 @@
 import tensorflow as tf
 
-loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True,
-                                                            reduction="none")
+loss_object = tf.keras.losses.SparseCategoricalCrossentropy(
+    from_logits=True,
+    reduction="none"
+)
 
 def loss_function(target, pred):
     mask = tf.math.logical_not(tf.math.equal(target, 0))
@@ -11,6 +13,3 @@ def loss_function(target, pred):
     loss_ *= mask
     
     return tf.reduce_mean(loss_)
-
-train_loss = tf.keras.metrics.Mean(name="train_loss")
-train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name="train_accuracy")
