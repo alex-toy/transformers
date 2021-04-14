@@ -1,7 +1,8 @@
 import app.config as cf
 import tensorflow as tf
+import time
 
-def run_model(dataset) :
+def run_model(dataset, ckpt_manager) :
     for epoch in range(cf.EPOCHS):
             print("Start of epoch {}".format(epoch+1))
             start = time.time()

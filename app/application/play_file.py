@@ -54,4 +54,4 @@ if __name__ == "__main__":
         print("Last checkpoint restored!!")
 
     
-    run_model(dataset)
+    run_model(dataset, ckpt_manager)

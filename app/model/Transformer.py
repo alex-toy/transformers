@@ -1,6 +1,8 @@
 import tensorflow as tf
+import tensorflow.keras.layers as layers
 from app.model.Encoder import Encoder
 from app.model.Decoder import Decoder
+
 
 class Transformer(tf.keras.Model):
     
