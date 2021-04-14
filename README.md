@@ -15,7 +15,8 @@ The purpose of the project is to create a translation model based on Transformer
 
 ## 2. General organisation of the project
 
-The porject is divided into three main parts :
+The project is divided into three main parts :
+
     - infrastructure : low level data cleaning
     - model : creation of the different components of the model
     - application : high level functions to orchestrate the model training and the final user interaction.
