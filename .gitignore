@@ -1,4 +1,5 @@
 nb/
+checkpoint/
 data/es_en/europarl-v7.es-en.en
 data/es_en/europarl-v7.es-en.es
 data/utils.txt
