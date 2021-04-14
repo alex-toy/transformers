@@ -14,5 +14,6 @@ def translate(sentence):
         [i for i in output if i < OUTPUT_VOCAB_SIZE-2]
     )
     
-    print("Entry: {}".format(sentence))
-    print("Predicted translation : {}".format(predicted_sentence))
+    #print("Entry: {}".format(sentence))
+    return predicted_sentence
+    
