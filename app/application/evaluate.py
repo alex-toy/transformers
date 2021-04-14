@@ -1,6 +1,7 @@
+
+
 def evaluate(inp_sentence):
-    inp_sentence = \
-        [VOCAB_SIZE_EN-2] + tokenizer_en.encode(inp_sentence) + [VOCAB_SIZE_EN-1]
+    inp_sentence = [VOCAB_SIZE_EN-2] + tokenizer_en.encode(inp_sentence) + [VOCAB_SIZE_EN-1]
     enc_input = tf.expand_dims(inp_sentence, axis=0)
     
     output = tf.expand_dims([VOCAB_SIZE_ES-2], axis=0)

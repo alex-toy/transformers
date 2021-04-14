@@ -1,3 +1,5 @@
+from app.application.evaluate import evaluate
+
 def translate(sentence):
     output = evaluate(sentence).numpy()
     
@@ -5,5 +7,5 @@ def translate(sentence):
         [i for i in output if i < VOCAB_SIZE_ES-2]
     )
     
-    print("Entrada: {}".format(sentence))
-    print("Traducción predicha: {}".format(predicted_sentence))
+    print("Entry: {}".format(sentence))
+    print("Predicted translation : {}".format(predicted_sentence))
