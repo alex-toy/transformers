@@ -1,4 +1,6 @@
-class Encoder(layers.Layer):
+import tensorflow as tf
+
+class Encoder(tf.keras.layers.Layer):
     
     def __init__(self,
                  nb_layers,

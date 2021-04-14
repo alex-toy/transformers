@@ -1,3 +1,5 @@
+import tensorflow as tf
+
 def scaled_dot_product_attention(queries, keys, values, mask):
     product = tf.matmul(queries, keys, transpose_b=True)
     

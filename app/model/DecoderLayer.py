@@ -1,4 +1,6 @@
-class DecoderLayer(layers.Layer):
+import tensorflow as tf
+
+class DecoderLayer(tf.keras.layers.Layer):
     
     def __init__(self, FFN_units, nb_proj, dropout_rate):
         super(DecoderLayer, self).__init__()

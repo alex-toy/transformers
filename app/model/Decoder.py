@@ -1,4 +1,6 @@
-class Decoder(layers.Layer):
+import tensorflow as tf
+
+class Decoder(tf.keras.layers.Layer):
     
     def __init__(self,
                  nb_layers,

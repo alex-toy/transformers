@@ -1,4 +1,6 @@
-class EncoderLayer(layers.Layer):
+import tensorflow as tf
+
+class EncoderLayer(tf.keras.layers.Layer):
     
     def __init__(self, FFN_units, nb_proj, dropout_rate):
         super(EncoderLayer, self).__init__()

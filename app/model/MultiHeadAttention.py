@@ -1,4 +1,6 @@
-class MultiHeadAttention(layers.Layer):
+import tensorflow as tf
+
+class MultiHeadAttention(tf.keras.layers.Layer):
     
     def __init__(self, nb_proj):
         super(MultiHeadAttention, self).__init__()
