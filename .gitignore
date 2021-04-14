@@ -1,5 +1,7 @@
 nb/
 data/
+!data/es_en_test/europarl-v7.es-en.en
+!data/es_en_test/europarl-v7.es-en.es
 output/
 .venv/
 .DS_Store/
