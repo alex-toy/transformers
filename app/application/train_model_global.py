@@ -54,7 +54,7 @@ def train_model_global() :
         print("Last checkpoint restored!!")
 
     
-    transformer = train_model(dataset, ckpt_manager, transformer)
+    transformer = train_model(dataset, ckpt_manager, transformer, optimizer)
     dump(transformer, os.path.join(cf.OUTPUTS_MODELS_DIR, 'transformer.joblib'))
 
 

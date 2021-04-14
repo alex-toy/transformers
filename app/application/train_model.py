@@ -2,7 +2,10 @@ import app.config as cf
 import tensorflow as tf
 import time
 
-def train_model(dataset, ckpt_manager, transformer) :
+from app.model.loss_function import loss_function
+
+
+def train_model(dataset, ckpt_manager, transformer, optimizer) :
     for epoch in range(cf.EPOCHS):
             print("Start of epoch {}".format(epoch+1))
             start = time.time()
