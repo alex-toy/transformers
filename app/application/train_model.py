@@ -2,7 +2,7 @@ import app.config as cf
 import tensorflow as tf
 import time
 
-def train_model(dataset, ckpt_manager) :
+def train_model(dataset, ckpt_manager, transformer) :
     for epoch in range(cf.EPOCHS):
             print("Start of epoch {}".format(epoch+1))
             start = time.time()
@@ -33,3 +33,5 @@ def train_model(dataset, ckpt_manager) :
             ckpt_save_path = ckpt_manager.save()
             print("Keep checkpoint for epoch {} in {}".format(epoch+1, ckpt_save_path))
             print("Duration of 1 epoch: {} secs\n".format(time.time() - start))
+
+    return transformer

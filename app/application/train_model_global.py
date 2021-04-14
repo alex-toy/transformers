@@ -5,6 +5,7 @@ from app.model.Transformer import Transformer
 from app.application.train_model import train_model
 
 import tensorflow as tf
+from joblib import dump, load
 
 tf.keras.backend.clear_session()
 
@@ -53,7 +54,8 @@ def train_model_global() :
         print("Last checkpoint restored!!")
 
     
-    train_model(dataset, ckpt_manager)
+    transformer = train_model(dataset, ckpt_manager, transformer)
+    dump(transformer, os.path.join(cf.OUTPUTS_MODELS_DIR, 'transformer.joblib'))
 
 
 

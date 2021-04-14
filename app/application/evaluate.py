@@ -18,18 +18,10 @@ def evaluate(inp_sentence):
     
     output = tf.expand_dims([OUTPUT_VOCAB_SIZE-2], axis=0)
 
-    transformer = Transformer(
-        vocab_size_enc=INPUT_VOCAB_SIZE,
-        vocab_size_dec=OUTPUT_VOCAB_SIZE,
-        d_model=cf.D_MODEL,
-        nb_layers=cf.NB_LAYERS,
-        FFN_units=cf.FFN_UNITS,
-        nb_proj=cf.NB_PROJ,
-        dropout_rate=cf.DROPOUT_RATE
-    )
+    transformer = load(os.path.join(cf.OUTPUTS_MODELS_DIR, 'transformer.joblib'))
     
     for _ in range(cf.MAX_LENGTH):
-        predictions = transformer(enc_input, output, False) #(1, seq_length, VOCAB_SIZE_ES)
+        predictions = transformer(enc_input, output, False)
         
         prediction = predictions[:, -1:, :]
         
