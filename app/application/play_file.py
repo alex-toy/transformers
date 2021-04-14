@@ -33,7 +33,7 @@ if __name__ == "__main__":
         dropout_rate=cf.DROPOUT_RATE
     )
 
-    leaning_rate = CustomSchedule(D_MODEL)
+    leaning_rate = CustomSchedule(cf.D_MODEL)
     optimizer = tf.keras.optimizers.Adam(
         leaning_rate,
         beta_1=0.9,
