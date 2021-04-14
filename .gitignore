@@ -1,11 +1,13 @@
 nb/
-checkpoint/
+checkpoint/*
+!checkpoint/README.md
 
 data/es_en/europarl-v7.es-en.en
 data/es_en/europarl-v7.es-en.es
 data/utils.txt
 
-output/*
+output/inputs.csv
+output/outputs.csv
 
 
 app/__pycache__/*
