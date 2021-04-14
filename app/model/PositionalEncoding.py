@@ -1,4 +1,6 @@
-class PositionalEncoding(layers.Layer):
+import tensorflow as tf 
+
+class PositionalEncoding(tf.keras.layers.Layer):
 
     def __init__(self):
         super(PositionalEncoding, self).__init__()
@@ -10,9 +12,11 @@ class PositionalEncoding(layers.Layer):
     def call(self, inputs):
         seq_length = inputs.shape.as_list()[-2]
         d_model = inputs.shape.as_list()[-1]
-        angles = self.get_angles(np.arange(seq_length)[:, np.newaxis],
-                                 np.arange(d_model)[np.newaxis, :],
-                                 d_model)
+        angles = self.get_angles(
+            np.arange(seq_length)[:, np.newaxis],
+            np.arange(d_model)[np.newaxis, :],
+            d_model
+        )
         angles[:, 0::2] = np.sin(angles[:, 0::2])
         angles[:, 1::2] = np.cos(angles[:, 1::2])
         pos_encoding = angles[np.newaxis, ...]
