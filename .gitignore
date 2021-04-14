@@ -18,6 +18,7 @@ app/__pycache__/*
 app/infrastructure/__pycache__/*
 app/application/__pycache__/*
 app/model/__pycache__/*
+app/*.pyc
 
 .venv/
 .DS_Store/

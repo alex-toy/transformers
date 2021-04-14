@@ -1,4 +1,5 @@
 import re
+import os
 import pandas as pd
 import tensorflow as tf
 import tensorflow_datasets as tfds
@@ -95,18 +96,18 @@ class CleanData :
     def tokenize(self) :
         input_corpus, output_corpus = self.get_cleaned_corpus()
         st_enc = tfds.deprecated.text.SubwordTextEncoder
-        print('tokenize 1')
+        print('tokenize')
         input_tokenizer = st_enc.build_from_corpus(
             input_corpus, target_vocab_size=2**13
         )
-        print('tokenize ; dump input_tokenizer')
-        dump(model, os.path.join(cf.OUTPUTS_MODELS_DIR, model_name)) 
+        print('Dump input_tokenizer')
+        dump(input_tokenizer, os.path.join(cf.OUTPUTS_MODELS_DIR, 'input_tokenizer.joblib')) 
         
         output_tokenizer = st_enc.build_from_corpus(
             output_corpus, target_vocab_size=2**13
         )
-        print('tokenize ; dump output_tokenizer')
-        dump(model, os.path.join(cf.OUTPUTS_MODELS_DIR, model_name)) 
+        print('Dump output_tokenizer')
+        dump(output_tokenizer, os.path.join(cf.OUTPUTS_MODELS_DIR, 'output_tokenizer.joblib')) 
 
         return input_tokenizer, output_tokenizer, input_corpus, output_corpus
 
@@ -173,8 +174,6 @@ class CleanData :
 
 if __name__ == "__main__":
 
-    #print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
-    
     cd = CleanData(
         input_data_path=cf.europarl_en_path, 
         input_nb_prefix_path=cf.nb_prefix_en_path, 

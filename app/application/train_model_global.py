@@ -1,4 +1,3 @@
-import app.model.Transformer
 import app.config as cf
 from app.infrastructure.CleanData import CleanData
 from app.model.CustomSchedule import CustomSchedule
