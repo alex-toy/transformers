@@ -30,3 +30,16 @@ if __name__ == "__main__":
         nb_proj=cf.NB_PROJ,
         dropout_rate=cf.DROPOUT_RATE
     )
+
+    checkpoint_path = cf.CHECKPOINT_PATH
+
+    ckpt = tf.train.Checkpoint(
+        transformer=transformer,
+        optimizer=optimizer
+    )
+
+    ckpt_manager = tf.train.CheckpointManager(ckpt, checkpoint_path, max_to_keep=5)
+
+    if ckpt_manager.latest_checkpoint:
+        ckpt.restore(ckpt_manager.latest_checkpoint)
+        print("Último checkpoint restaurado!!")
