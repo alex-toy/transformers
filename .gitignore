@@ -1,9 +1,7 @@
 nb/
 data/es_en/europarl-v7.es-en.en
 data/es_en/europarl-v7.es-en.es
-data/nonbreaking_prefix.en
-data/nonbreaking_prefix.es
-data/utils
+data/utils.txt
 output/
 .venv/
 .DS_Store/
