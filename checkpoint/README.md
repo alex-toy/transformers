@@ -1,3 +1,2 @@
-# transformers
+inside folder checkpoint, you will find the checkpoints produced while training model.
 
-create folders checkpoint, output at the root of the project.

@@ -1,1 +1,2 @@
-inside folder checkpoint, you will find the checkpoints produced while training model.
+inside folder models, you will find the pickelized objects.
+
