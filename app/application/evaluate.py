@@ -5,6 +5,7 @@ from joblib import dump, load
 import tensorflow as tf
 
 from app.model.Transformer import Transformer
+from app.application.pickling import to_pickle, from_pickle
 
 def evaluate(inp_sentence):
     INPUT_VOCAB_SIZE = load(os.path.join(cf.OUTPUTS_MODELS_DIR, 'INPUT_VOCAB_SIZE.joblib'))
@@ -18,7 +19,8 @@ def evaluate(inp_sentence):
     
     output = tf.expand_dims([OUTPUT_VOCAB_SIZE-2], axis=0)
 
-    transformer = load(os.path.join(cf.OUTPUTS_MODELS_DIR, 'transformer.joblib'))
+    #transformer = load(os.path.join(cf.OUTPUTS_MODELS_DIR, 'transformer.joblib'))
+    transformer = from_pickle('transformer')
     
     for _ in range(cf.MAX_LENGTH):
         predictions = transformer(enc_input, output, False)

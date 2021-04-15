@@ -60,11 +60,8 @@ def train_model_step_1() :
     to_pickle('optimizer', optimizer)
 
 
-    return dataset, ckpt_manager, transformer, optimizer
-
-
 
 
 if __name__ == "__main__":
     
-    dataset, ckpt_manager, transformer, optimizer = train_model_step_1()
+    train_model_step_1()

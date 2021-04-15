@@ -13,8 +13,8 @@ def to_pickle(item_name, item) :
 
 
 
-def from_pickle(item) :
-    infile = open(os.path.join(cf.OUTPUTS_MODELS_DIR, item, '.pickle'),'rb')
+def from_pickle(item_name) :
+    infile = open(os.path.join(cf.OUTPUTS_MODELS_DIR, item_name),'rb')
     item = pickle.load(infile)
     infile.close()
     return item

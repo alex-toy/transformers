@@ -65,7 +65,7 @@ def train_model_global() :
 if __name__ == "__main__":
     
     #train_model_global()
-    dataset, ckpt_manager, transformer, optimizer = train_model_step_1()
-    train_model_step_2(dataset, ckpt_manager, transformer, optimizer)
+    train_model_step_1()
+    train_model_step_2()
 
     

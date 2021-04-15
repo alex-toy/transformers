@@ -10,15 +10,20 @@ import tensorflow as tf
 from joblib import dump, load
 
 
-def train_model_step_2(dataset, ckpt_manager, transformer, optimizer) :
+def train_model_step_2() :
+
+    dataset = from_pickle('dataset')
+    ckpt_manager = from_pickle('ckpt_manager')
+    transformer = from_pickle('transformer')
+    optimizer = from_pickle('optimizer')
     
     transformer = train_model(dataset, ckpt_manager, transformer, optimizer)
-    dump(transformer, os.path.join(cf.OUTPUTS_MODELS_DIR, 'transformer.joblib'))
-
-
+    to_pickle('transformer', transformer)
+    
 
 
 if __name__ == "__main__":
     
-    dataset, ckpt_manager, transformer, optimizer = None, None, None, None
-    train_model_step_2(dataset, ckpt_manager, transformer, optimizer)
+    train_model_step_2()
+
+
