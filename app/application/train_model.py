@@ -1,6 +1,7 @@
 import app.config as cf
 import tensorflow as tf
 import time
+import os
 
 from app.model.loss_function import loss_function
 from joblib import dump, load
