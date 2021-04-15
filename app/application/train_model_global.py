@@ -4,8 +4,6 @@ from app.infrastructure.CleanData import CleanData
 from app.model.CustomSchedule import CustomSchedule
 from app.model.Transformer import Transformer
 from app.application.train_model import train_model
-from app.application.train_model_step_1 import train_model_step_1
-from app.application.train_model_step_2 import train_model_step_2
 
 import tensorflow as tf
 from joblib import dump, load
