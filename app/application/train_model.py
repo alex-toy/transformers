@@ -3,6 +3,7 @@ import tensorflow as tf
 import time
 
 from app.model.loss_function import loss_function
+from joblib import dump, load
 
 
 def train_model(dataset, ckpt_manager, transformer, optimizer) :
@@ -38,4 +39,3 @@ def train_model(dataset, ckpt_manager, transformer, optimizer) :
             print(f"Duration of epoch {epoch} : {time.time() - start} secs\n")
 
     dump(transformer, os.path.join(cf.OUTPUTS_MODELS_DIR, 'transformer.joblib'))
-    
