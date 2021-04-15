@@ -4,16 +4,14 @@ from app.infrastructure.CleanData import CleanData
 from app.model.CustomSchedule import CustomSchedule
 from app.model.Transformer import Transformer
 from app.application.train_model import train_model
-from app.application.train_model_step_1 import train_model_step_1
-from app.application.train_model_step_2 import train_model_step_2
+from app.application.pickling import to_pickle, from_pickle
 
 import tensorflow as tf
 from joblib import dump, load
 
-tf.keras.backend.clear_session()
 
 
-def train_model_global() :
+def train_model_step_1() :
 
     cd = CleanData(
         input_data_path=cf.europarl_en_path, 
@@ -56,16 +54,17 @@ def train_model_global() :
         ckpt.restore(ckpt_manager.latest_checkpoint)
         print("Last checkpoint restored!!")
 
+    to_pickle('dataset', dataset)
+    to_pickle('ckpt_manager', ckpt_manager)
+    to_pickle('transformer', transformer)
+    to_pickle('optimizer', optimizer)
 
-    transformer = train_model(dataset, ckpt_manager, transformer, optimizer)
-    dump(transformer, os.path.join(cf.OUTPUTS_MODELS_DIR, 'transformer.joblib'))
+
+    return dataset, ckpt_manager, transformer, optimizer
+
 
 
 
 if __name__ == "__main__":
     
-    #train_model_global()
     dataset, ckpt_manager, transformer, optimizer = train_model_step_1()
-    train_model_step_2(dataset, ckpt_manager, transformer, optimizer)
-
-    

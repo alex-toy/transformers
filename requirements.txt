@@ -3,3 +3,4 @@ pandas
 tensorflow
 tensorflow_datasets
 joblib
+pickle-mixin
