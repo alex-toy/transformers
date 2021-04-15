@@ -19,8 +19,7 @@ def evaluate(inp_sentence):
     
     output = tf.expand_dims([OUTPUT_VOCAB_SIZE-2], axis=0)
 
-    #transformer = load(os.path.join(cf.OUTPUTS_MODELS_DIR, 'transformer.joblib'))
-    transformer = from_pickle('transformer')
+    transformer = load(os.path.join(cf.OUTPUTS_MODELS_DIR, 'transformer.joblib'))
     
     for _ in range(cf.MAX_LENGTH):
         predictions = transformer(enc_input, output, False)

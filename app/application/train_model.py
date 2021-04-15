@@ -37,4 +37,5 @@ def train_model(dataset, ckpt_manager, transformer, optimizer) :
             print("Keep checkpoint for epoch {} in {}".format(epoch+1, ckpt_save_path))
             print(f"Duration of epoch {epoch} : {time.time() - start} secs\n")
 
-    return transformer
+    dump(transformer, os.path.join(cf.OUTPUTS_MODELS_DIR, 'transformer.joblib'))
+    
